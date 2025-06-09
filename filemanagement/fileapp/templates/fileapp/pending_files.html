@@ -1,0 +1,60 @@
+{% extends 'fileapp/base.html' %}
+
+{% block title %}Pending Files - File Management{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h2>Pending File Transfers</h2>
+        <p class="text-muted">Files that have been transferred to you and await your action</p>
+
+        {% if pending_transfers %}
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>File Number</th>
+                                    <th>From User</th>
+                                    <th>Transfer Date</th>
+                                    <th>Remarks</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for transfer in pending_transfers %}
+                                <tr>
+                                    <td><strong>{{ transfer.file_no.file_no }}</strong></td>
+                                    <td>
+                                        <div>
+                                            <strong>{{ transfer.from_user.user_name }}</strong>
+                                            <br>
+                                            <small class="text-muted">{{ transfer.from_user.designation }}</small>
+                                        </div>
+                                    </td>
+                                    <td>{{ transfer.log_date|date:"M d, Y H:i" }}</td>
+                                    <td>{{ transfer.remarks|default:"No remarks" }}</td>
+                                    <td>
+                                        <a href="{% url 'accept_file' transfer.log_id %}" class="btn btn-primary btn-sm">
+                                            Review
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">No Pending Transfers</h5>
+                    <p class="card-text">You have no files waiting for your action.</p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

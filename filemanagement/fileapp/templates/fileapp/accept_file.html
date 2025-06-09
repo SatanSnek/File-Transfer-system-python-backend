@@ -1,0 +1,41 @@
+{% extends 'fileapp/base.html' %}
+
+{% block title %}Accept File - File Management{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4>File Transfer Review</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <h6><strong>File Details:</strong></h6>
+                    <p><strong>File Number:</strong> {{ log_entry.file_no.file_no }}</p>
+                    <p><strong>From:</strong> {{ log_entry.from_user.user_name }} ({{ log_entry.from_user.designation }})</p>
+                    <p><strong>Transfer Date:</strong> {{ log_entry.log_date|date:"M d, Y H:i" }}</p>
+                    {% if log_entry.remarks %}
+                        <p><strong>Remarks:</strong> {{ log_entry.remarks }}</p>
+                    {% endif %}
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                        <button type="submit" name="action" value="accept" class="btn btn-success me-md-2">
+                            Accept File
+                        </button>
+                        <button type="submit" name="action" value="reject" class="btn btn-danger me-md-2">
+                            Reject File
+                        </button>
+                        <a href="{% url 'pending_files' %}" class="btn btn-secondary">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

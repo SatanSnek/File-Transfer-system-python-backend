@@ -1,0 +1,62 @@
+{% extends 'fileapp/base.html' %}
+
+{% block title %}Dashboard - File Management{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h2>Welcome, {{ user.user_name }}!</h2>
+        <p class="text-muted">{{ user.designation }} - {{ user.section_id }}</p>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5 class="card-title">Total Files</h5>
+                <h3>{{ total_files }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <h5 class="card-title">Pending Files</h5>
+                <h3>{{ pending_files }}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <h4>Recent Files</h4>
+        <div class="list-group">
+            {% for file in user_files %}
+                <div class="list-group-item">
+                    <h6>{{ file.file_no }}</h6>
+                    <small class="text-muted">{{ file.uploaded_at|date:"M d, Y H:i" }}</small>
+                </div>
+            {% empty %}
+                <div class="list-group-item">No files uploaded yet.</div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <h4>Recent Activity</h4>
+        <div class="list-group">
+            {% for log in recent_logs %}
+                <div class="list-group-item">
+                    <h6>{{ log.file_no.file_no }}</h6>
+                    <p class="mb-1">From: {{ log.from_user.user_name }} → To: {{ log.to_user.user_name }}</p>
+                    <small class="text-muted">{{ log.log_date|date:"M d, Y H:i" }} - {{ log.status|title }}</small>
+                </div>
+            {% empty %}
+                <div class="list-group-item">No activity yet.</div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
